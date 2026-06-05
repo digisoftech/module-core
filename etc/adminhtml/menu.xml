@@ -13,6 +13,13 @@
              module="Digisoftech_Core"
              sortOrder="65"
              resource="Digisoftech_Core::digisoftech"/>
+        <add id="Digisoftech_Core::configuration"
+             title="Configuration"
+             module="Digisoftech_Core"
+             sortOrder="5"
+             parent="Digisoftech_Core::digisoftech"
+             action="adminhtml/system_config/edit/section/digisoftech_core"
+             resource="Digisoftech_Core::configuration"/>
         <add id="Digisoftech_Core::extensions"
              title="Extensions"
              module="Digisoftech_Core"

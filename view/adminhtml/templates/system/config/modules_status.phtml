@@ -1,0 +1,126 @@
+<?php
+/**
+ * Copyright © Digisoftech. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * @var \Digisoftech\Core\Block\Adminhtml\System\Config\ModulesStatus $block
+ */
+
+$status = $block->getLicenseStatus();
+$summary = $status['summary'] ?? [
+    'total_installed' => 0,
+    'support_active' => 0,
+    'support_expired' => 0,
+];
+$modules = $status['modules'] ?? [];
+$isVerified = ($status['success'] ?? false) === true;
+?>
+
+<div class="digisoftech-license-dashboard" data-role="digisoftech-license-dashboard">
+    <div class="digisoftech-license-dashboard__summary">
+        <div class="digisoftech-license-dashboard__card">
+            <span class="digisoftech-license-dashboard__card-label"><?= $block->escapeHtml(__('Installed Extensions')) ?></span>
+            <strong class="digisoftech-license-dashboard__card-value"><?= (int) $summary['total_installed'] ?></strong>
+        </div>
+        <div class="digisoftech-license-dashboard__card digisoftech-license-dashboard__card--active">
+            <span class="digisoftech-license-dashboard__card-label"><?= $block->escapeHtml(__('Active Support')) ?></span>
+            <strong class="digisoftech-license-dashboard__card-value"><?= (int) $summary['support_active'] ?></strong>
+        </div>
+        <div class="digisoftech-license-dashboard__card digisoftech-license-dashboard__card--expired">
+            <span class="digisoftech-license-dashboard__card-label"><?= $block->escapeHtml(__('Expired Support')) ?></span>
+            <strong class="digisoftech-license-dashboard__card-value"><?= (int) $summary['support_expired'] ?></strong>
+        </div>
+    </div>
+
+    <?php if (!$block->hasLicenseKey()): ?>
+        <div class="message message-notice">
+            <span><?= $block->escapeHtml(__('Enter your Digisoftech license key above and save configuration to verify module support status.')) ?></span>
+        </div>
+    <?php elseif (!$isVerified): ?>
+        <div class="message message-error">
+            <span><?= $block->escapeHtml((string) ($status['message'] ?? __('Unable to verify license status.'))) ?></span>
+        </div>
+    <?php else: ?>
+        <div class="message message-success">
+            <span><?= $block->escapeHtml(__('License status verified successfully.')) ?></span>
+        </div>
+    <?php endif; ?>
+
+    <div class="digisoftech-license-dashboard__actions">
+        <button type="button"
+                class="action-secondary digisoftech-license-dashboard__refresh"
+                data-mage-init='{"Digisoftech_Core/js/license-refresh": {"refreshUrl": "<?= $block->escapeUrl($block->getRefreshUrl()) ?>"}}'>
+            <span><?= $block->escapeHtml(__('Refresh Status')) ?></span>
+        </button>
+        <a class="action-primary"
+           href="<?= $block->escapeUrl($block->getPurchaseUrl()) ?>"
+           target="_blank"
+           rel="noopener noreferrer">
+            <span><?= $block->escapeHtml(__('Purchase License')) ?></span>
+        </a>
+    </div>
+
+    <table class="admin__table-secondary digisoftech-license-dashboard__table">
+        <thead>
+            <tr>
+                <th><?= $block->escapeHtml(__('Extension')) ?></th>
+                <th><?= $block->escapeHtml(__('Version')) ?></th>
+                <th><?= $block->escapeHtml(__('License')) ?></th>
+                <th><?= $block->escapeHtml(__('Support')) ?></th>
+                <th><?= $block->escapeHtml(__('Support Expires')) ?></th>
+                <th><?= $block->escapeHtml(__('Action')) ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ($modules === []): ?>
+                <tr>
+                    <td colspan="6">
+                        <?= $block->escapeHtml(__('No Digisoftech extensions are installed.')) ?>
+                    </td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($modules as $module): ?>
+                    <?php
+                    $supportStatus = (string) ($module['support_status'] ?? 'unknown');
+                    $licenseStatus = (string) ($module['license_status'] ?? 'unknown');
+                    $purchaseUrl = (string) ($module['purchase_url'] ?? $block->getPurchaseUrl());
+                    $supportLabel = match ($supportStatus) {
+                        'active' => (string) __('Active'),
+                        'expired' => (string) __('Expired'),
+                        default => (string) __('Unknown'),
+                    };
+                    ?>
+                    <tr>
+                        <td>
+                            <strong><?= $block->escapeHtml((string) ($module['title'] ?? '')) ?></strong><br/>
+                            <span class="digisoftech-license-dashboard__meta"><?= $block->escapeHtml((string) ($module['package_name'] ?? '')) ?></span>
+                        </td>
+                        <td><?= $block->escapeHtml((string) ($module['version'] ?? '')) ?></td>
+                        <td>
+                            <span class="digisoftech-license-dashboard__badge digisoftech-license-dashboard__badge--<?= $block->escapeHtmlAttr($licenseStatus) ?>">
+                                <?= $block->escapeHtml(ucfirst($licenseStatus)) ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="digisoftech-license-dashboard__badge digisoftech-license-dashboard__badge--<?= $block->escapeHtmlAttr($supportStatus) ?>">
+                                <?= $block->escapeHtml($supportLabel) ?>
+                            </span>
+                        </td>
+                        <td><?= $block->escapeHtml($block->formatSupportExpiresAt($module['support_expires_at'] ?? null)) ?></td>
+                        <td>
+                            <?php if ($supportStatus !== 'active'): ?>
+                                <a href="<?= $block->escapeUrl($purchaseUrl) ?>"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <?= $block->escapeHtml(__('Purchase License')) ?>
+                                </a>
+                            <?php else: ?>
+                                <span class="digisoftech-license-dashboard__meta"><?= $block->escapeHtml(__('No action required')) ?></span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>

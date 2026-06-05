@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Digisoftech. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <digisoftech_core>
+            <license>
+                <api_base_url>https://composer.digisoftech.com</api_base_url>
+                <purchase_url>https://www.digisoftech.com/magento2/extensions.html</purchase_url>
+            </license>
+        </digisoftech_core>
+    </default>
+</config>

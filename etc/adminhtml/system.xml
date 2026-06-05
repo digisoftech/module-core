@@ -11,5 +11,40 @@
         <tab id="digisoftech" translate="label" sortOrder="65">
             <label>Digisoftech</label>
         </tab>
+        <section id="digisoftech_core"
+                 translate="label"
+                 type="text"
+                 sortOrder="5"
+                 showInDefault="1"
+                 showInWebsite="0"
+                 showInStore="0">
+            <label>Configuration</label>
+            <tab>digisoftech</tab>
+            <resource>Digisoftech_Core::configuration</resource>
+            <group id="license" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>License &amp; Support</label>
+                <field id="license_key"
+                       translate="label comment"
+                       type="obscure"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>License Key</label>
+                    <backend_model>Digisoftech\Core\Model\Config\Backend\LicenseKey</backend_model>
+                    <comment>Enter your Digisoftech license key. The key is stored encrypted and verified securely against composer.digisoftech.com when saved.</comment>
+                </field>
+                <field id="modules_status"
+                       translate="label"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Installed Extensions</label>
+                    <frontend_model>Digisoftech\Core\Block\Adminhtml\System\Config\ModulesStatus</frontend_model>
+                </field>
+            </group>
+        </section>
     </system>
 </config>
