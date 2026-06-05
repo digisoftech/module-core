@@ -1,0 +1,4 @@
+Copyright © Digisoftech. All rights reserved.
+
+This software is proprietary and may not be copied, modified, or distributed
+without explicit written permission from Digisoftech.

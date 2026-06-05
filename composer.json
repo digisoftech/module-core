@@ -1,0 +1,29 @@
+{
+    "name": "digisoftech/module-core",
+    "description": "Digisoftech foundation module for shared admin navigation and configuration",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Digisoftech",
+            "email": "support@digisoftech.com",
+            "homepage": "https://www.digisoftech.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "magento/framework": "*",
+        "magento/module-backend": "*",
+        "magento/module-config": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Digisoftech\\Core\\": ""
+        }
+    }
+}
